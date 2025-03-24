@@ -8,7 +8,7 @@ import 'package:weather_app_tutorial/services/geolocator.dart';
 import 'package:weather_app_tutorial/utils/logging.dart';
 
 class ApiHelper {
-  static const baseUrl = 'https://api.openweathermap.org/data/3.0';
+  static const baseUrl = 'https://api.openweathermap.org/data/2.5';
   static const weeklyWeatherUrl = '';
 
   static double lat = 0.0;
@@ -30,7 +30,7 @@ class ApiHelper {
   }
 
   // Hourly Weather
-  static Future<HourlyWeather> getHourlyForecaset() async {
+  static Future<HourlyWeather> getHourlyForecast() async {
     await fetchLocation();
     final url = _constructForecastUrl();
     final response = await _fetchData(url);
@@ -44,6 +44,16 @@ class ApiHelper {
     final response = await _fetchData(url);
     return WeeklyWeather.fromJson(response);
   }
+
+  // Weather by City Name
+  static Future<Weather> getWeatherByCityName({
+    required String cityName
+}) async {
+    final url = _constructWeatherByCityUrl(cityName);
+    final response = await _fetchData(url);
+    return Weather.fromJson(response);
+  }
+
   static String _constructWeatherUrl() =>
       '$baseUrl/weather?lat=$lat&lon=$lon&units=metric&appid=${Constants.apiKey}';
 
@@ -52,6 +62,9 @@ class ApiHelper {
 
   static String _constructWeeklyForecastUrl() =>
       '$baseUrl/weeklyWeatherUrl?latitude=$lat&longitude=$lon&appid=${Constants.apiKey}';
+
+  static String _constructWeatherByCityUrl(String cityName) =>
+      '$baseUrl/weather?q=$cityName&units=metric&appid=${Constants.apiKey}';
 
   static Future<Map<String, dynamic>> _fetchData(String url) async {
     try {

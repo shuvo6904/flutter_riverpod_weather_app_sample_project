@@ -10,12 +10,13 @@ Future<Position> getLocation() async {
     if (permission == LocationPermission.denied) {
       return Future.error('Location permissions are denied');
     }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.'
-      );
-    }
-    return await Geolocator.getCurrentPosition();
   }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.'
+    );
+  }
+
+  return await Geolocator.getCurrentPosition();
 }
