@@ -9,7 +9,7 @@ import 'package:weather_app_tutorial/utils/logging.dart';
 
 class ApiHelper {
   static const baseUrl = 'https://api.openweathermap.org/data/2.5';
-  static const weeklyWeatherUrl = '';
+  static const weeklyWeatherUrl = 'https://api.open-meteo.com/v1/forecast?current=&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto';
 
   static double lat = 0.0;
   static double lon = 0.0;
@@ -60,11 +60,11 @@ class ApiHelper {
   static String _constructForecastUrl() =>
       '$baseUrl/forecast?lat=$lat&lon=$lon&units=metric&appid=${Constants.apiKey}';
 
-  static String _constructWeeklyForecastUrl() =>
-      '$baseUrl/weeklyWeatherUrl?latitude=$lat&longitude=$lon&appid=${Constants.apiKey}';
-
   static String _constructWeatherByCityUrl(String cityName) =>
       '$baseUrl/weather?q=$cityName&units=metric&appid=${Constants.apiKey}';
+
+  static String _constructWeeklyForecastUrl() =>
+      '$weeklyWeatherUrl&latitude=$lat&longitude=$lon';
 
   static Future<Map<String, dynamic>> _fetchData(String url) async {
     try {
